@@ -29,25 +29,25 @@ class css_andthen {
 		add_action('load-post-new.php',array(&$this,'load'),1);
 		add_action('admin_head-post-new.php',array(&$this,'load_new'),2);
 		add_filter('redirect_post_location',array(&$this,'redirect'),1,2);
-		if (isset($_GET['message']) && isset($_GET['next'])) add_filter('post_updated_messages',array(&$this,'notices'));
+		if (isset($_GET['message']) && isset($_GET['andthen'])) add_filter('post_updated_messages',array(&$this,'notices'));
 		add_action('post_submitbox_misc_actions',array(&$this,'submitbox_action'),999999);
 	}
 
 	function posted() {
-		if (!isset($_POST) || !is_array($_POST) || !count($_POST) || !isset($_POST['next'])) return;
+		if (!isset($_POST) || !is_array($_POST) || !count($_POST) || !isset($_POST['andthen'])) return;
 
-		$meta = array('action' => $_POST['next']['action']);
-		if ('add' == $_POST['next']['action']) {
-			if (isset($_POST['next']['add'])) $meta['add'] = $_POST['next']['add'];
-			if (isset($_POST['next']['parent'])) $meta['parent'] = 1;
-			if (isset($_POST['next']['order'])) $meta['order'] = 1;
-			if (isset($_POST['next']['orderdir'])) $meta['orderdir'] = $_POST['next']['orderdir'];
-		} else if ('goto' == $_POST['next']['action'])
-			$meta['goto'] = $_POST['next']['goto'];
+		$meta = array('action' => $_POST['andthen']['action']);
+		if ('add' == $_POST['andthen']['action']) {
+			if (isset($_POST['andthen']['add'])) $meta['add'] = $_POST['andthen']['add'];
+			if (isset($_POST['andthen']['parent'])) $meta['parent'] = 1;
+			if (isset($_POST['andthen']['order'])) $meta['order'] = 1;
+			if (isset($_POST['andthen']['orderdir'])) $meta['orderdir'] = $_POST['andthen']['orderdir'];
+		} else if ('goto' == $_POST['andthen']['action'])
+			$meta['goto'] = $_POST['andthen']['goto'];
 
 		$user = get_current_user_id();
-		if (get_user_meta($user,'publish-next',true) != $meta)
-			update_user_meta($user,'publish-next',$meta);
+		if (get_user_meta($user,'publish-andthen',true) != $meta)
+			update_user_meta($user,'publish-andthen',$meta);
 
 		//echo '<pre>' . print_r($_POST,true) . '</pre>';
 		//exit();
@@ -60,10 +60,10 @@ class css_andthen {
 		wp_enqueue_script('andthen',plugin_dir_url(__FILE__) . 'admin.js',array('jquery','chosen'));
 		wp_enqueue_style('andthen',plugin_dir_url(__FILE__) . 'admin.css',array('chosen'));
 
-		if ($this->usermeta = get_user_meta(get_current_user_id(),'publish-next',true))
+		if ($this->usermeta = get_user_meta(get_current_user_id(),'publish-andthen',true))
 			$this->action = $this->usermeta['action'];
 
-		if (isset($_POST['next']) && is_array($_POST['next']) && count($_POST['next']) && isset($_POST['next']['action'])) $this->action = $_POST['next']['action'];
+		if (isset($_POST['andthen']) && is_array($_POST['andthen']) && count($_POST['andthen']) && isset($_POST['andthen']['action'])) $this->action = $_POST['andthen']['action'];
 		if (empty($this->action)) $this->action = 'edit';
 
 		$this->labels = array(
@@ -107,7 +107,7 @@ class css_andthen {
 
 	function redirect($url,$post_id) {
 		$orig = $url;
-		if (!isset($_POST['next']) || !count($_POST['next']) || 'edit' == $this->action) return $url;
+		if (!isset($_POST['andthen']) || !count($_POST['andthen']) || 'edit' == $this->action) return $url;
 		if ('view' == $this->action) return get_permalink($post_id);
 
 		$args = array();
@@ -118,31 +118,31 @@ class css_andthen {
 		}
 
 		$post = $_POST;
-		$next = $post['next'];
+		$andthen = $post['andthen'];
 
 		if ('add' == $this->action) {
 			$url = admin_url('post-new.php');
-			$url = add_query_arg('post_type',$next['add'],$url);
-			if (isset($next['parent'])) $url = add_query_arg('parent_id',$post['parent_id'],$url);
-			if (isset($next['order'])) {
+			$url = add_query_arg('post_type',$andthen['add'],$url);
+			if (isset($andthen['parent'])) $url = add_query_arg('parent_id',$post['parent_id'],$url);
+			if (isset($andthen['order'])) {
 				$order = $post['menu_order'];
-				if ('increment' == $next['orderdir']) $order++;
+				if ('increment' == $andthen['orderdir']) $order++;
 				else $order--;
 				$url = add_query_arg('menu_order',$order,$url);
 			}
 		} else if ('goto' == $this->action) {
-			if (is_array($this->goto[$next['goto']])) $url = $this->goto[$next['goto']][1];
-			else $url = $this->goto[$next['goto']];
+			if (is_array($this->goto[$andthen['goto']])) $url = $this->goto[$andthen['goto']][1];
+			else $url = $this->goto[$andthen['goto']];
 		}
 
 		if (isset($args['message'])) $url = add_query_arg('message',$args['message'],$url);
-		$url = add_query_arg('next',$post_id,$url);
+		$url = add_query_arg('andthen',$post_id,$url);
 		//die($url);
 		return $url;
 	}
 
 	function notices($notices) {
-		$post_ID = $_GET['next'];
+		$post_ID = $_GET['andthen'];
 		$post_type = get_post_type_object(get_post_type($post_ID));
 		
 		if (!$notice = $notices[$post_type->name][$_GET['message']]) {
@@ -186,46 +186,46 @@ class css_andthen {
 		//echo '<pre>' . print_r($this->post_types['post'],true) . '</pre>';
 		?>
 
-		<div class="misc-pub-section misc-pub-next" id="next">
+		<div class="misc-pub-section misc-pub-andthen" id="andthen">
 
-			<span class="title">Next:</span> 
-			<span id="next-display"><?php echo $display ?></span> 
-			<a href="#next" id="next-edit" class="edit-next hide-if-no-js"><span aria-hidden="true">Edit</span><span class="screen-reader-text">Edit next action</span></a>
+			<span class="title">And Then:</span> 
+			<span id="andthen-display"><?php echo $display ?></span> 
+			<a href="#andthen" id="andthen-edit" class="edit-andthen hide-if-no-js"><span aria-hidden="true">Edit</span><span class="screen-reader-text">Edit andthen action</span></a>
 
-			<div id="misc-pub-next-select" class="hide-if-no-js" style="display: none;">
+			<div id="misc-pub-andthen-select" class="hide-if-no-js" style="display: none;">
 
-				<input type="hidden" name="next[action]" id="next-action" value="<?php echo $this->action ?>" />
+				<input type="hidden" name="andthen[action]" id="andthen-action" value="<?php echo $this->action ?>" />
 
 				<ul>
 
-					<li class="next-edit">
+					<li class="andthen-edit">
 
-						<input type="radio" id="next-action-edit" name="next-action" value="edit" <?php checked('edit',$this->action,true) ?> />
-						<label for="next-action-edit"> Edit this <?php echo $this->post_types[$this->post_type]->name ?></label>
-
-					</li>
-
-					<li class="next-view">
-
-						<input type="radio" id="next-action-view" name="next-action" value="view" <?php checked('view',$this->action,true) ?> />
-						<label for="next-action-view"> View this <?php echo $this->post_types[$this->post_type]->name ?></label>
+						<input type="radio" id="andthen-action-edit" name="andthen-action" value="edit" <?php checked('edit',$this->action,true) ?> />
+						<label for="andthen-action-edit"> Edit this <?php echo $this->post_types[$this->post_type]->name ?></label>
 
 					</li>
 
-					<li class="next-add">
+					<li class="andthen-view">
 
-						<input type="radio" id="next-action-add" name="next-action" value="add" <?php checked('add',$this->action,true) ?> />
-						<label for="next-action-add">Add new:</label> <?php $this->addnew() ?>
+						<input type="radio" id="andthen-action-view" name="andthen-action" value="view" <?php checked('view',$this->action,true) ?> />
+						<label for="andthen-action-view"> View this <?php echo $this->post_types[$this->post_type]->name ?></label>
+
+					</li>
+
+					<li class="andthen-add">
+
+						<input type="radio" id="andthen-action-add" name="andthen-action" value="add" <?php checked('add',$this->action,true) ?> />
+						<label for="andthen-action-add">Add new:</label> <?php $this->addnew() ?>
 
 						<?php if ($hier = is_post_type_hierarchical($this->post_type) || (1 == $this->post_types[$this->post_type]->_builtin || $attr = post_type_supports($this->post_type,'page-attributes'))) { ?>
 
-							<ul class="next-add-options"<?php if ('add' != $this->action) echo ' style="display: none;"' ?>>
+							<ul class="andthen-add-options"<?php if ('add' != $this->action) echo ' style="display: none;"' ?>>
 
 								<?php if ($hier) { ?>
 
-									<li class="next-add-options-parent"<?php if (in_array($post->post_parent,array('',0))) echo ' style="display: none;"' ?>>
-										<input type="checkbox" id="next-add-parent" name="next[parent]" value="1"<?php checked(1,isset($this->usermeta['parent']),true) ?> />
-										<label for="next-add-parent"> Same parent</label>
+									<li class="andthen-add-options-parent"<?php if (in_array($post->post_parent,array('',0))) echo ' style="display: none;"' ?>>
+										<input type="checkbox" id="andthen-add-parent" name="andthen[parent]" value="1"<?php checked(1,isset($this->usermeta['parent']),true) ?> />
+										<label for="andthen-add-parent"> Same parent</label>
 									</li>
 
 								<?php } ?>
@@ -234,9 +234,9 @@ class css_andthen {
 								
 									<li style="margin-bottom: 0;">
 										
-										<input type="checkbox" id="next-add-order" name="next[order]" value="1"<?php checked(1,isset($this->usermeta['order']),true) ?> />
-										<label for="next-add-order"> 
-											<select name="next[orderdir]" id="next-add-order-turn">
+										<input type="checkbox" id="andthen-add-order" name="andthen[order]" value="1"<?php checked(1,isset($this->usermeta['order']),true) ?> />
+										<label for="andthen-add-order"> 
+											<select name="andthen[orderdir]" id="andthen-add-order-turn">
 												<option value="increment"<?php selected('++',$order,true) ?>>Increment</option>
 												<option value="decrement"<?php selected('--',$order,true) ?>>Decrement</option>
 											</select> 
@@ -253,18 +253,18 @@ class css_andthen {
 
 					</li>
 
-					<li class="next-goto">
+					<li class="andthen-goto">
 
-						<input type="radio" id="next-action-goto" name="next-action" value="goto" <?php checked('goto',$this->action,true) ?> />
-						<label for="next-action-goto"> Go to:</label> <?php $this->goes() ?>
+						<input type="radio" id="andthen-action-goto" name="andthen-action" value="goto" <?php checked('goto',$this->action,true) ?> />
+						<label for="andthen-action-goto"> Go to:</label> <?php $this->goes() ?>
 
 					</li>
 				
 				</ul>
 
 				<p>
-					<a href="#next" class="save-post-next hide-if-no-js button">OK</a>
-					<a href="#next" class="cancel-post-next hide-if-no-js button-cancel">Cancel</a>
+					<a href="#andthen" class="save-post-andthen hide-if-no-js button">OK</a>
+					<a href="#andthen" class="cancel-post-andthen hide-if-no-js button-cancel">Cancel</a>
 				</p>
 
 			</div>
@@ -277,7 +277,7 @@ class css_andthen {
 		function addnew() {
 			?>
 
-			<select name="next[add]" id="next-add">
+			<select name="andthen[add]" id="andthen-add">
 
 				<?php
 				$post_types = $this->post_types;
@@ -295,7 +295,7 @@ class css_andthen {
 		function goes() {
 			?>
 
-			<select name="next[goto]" id="next-goto">
+			<select name="andthen[goto]" id="andthen-goto">
 
 				<?php
 				$selected = $this->post_type;

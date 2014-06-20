@@ -1,4 +1,4 @@
-#post-body .misc-pub-section.misc-pub-next span.title:before {
+#post-body .misc-pub-section.misc-pub-andthen span.title:before {
 	content: "\f344";
 	font: 400 20px/1 dashicons;
 	speak: none;
@@ -14,36 +14,36 @@
 	color: #888;
 }
 
-#post-body .misc-pub-section.misc-pub-next #next-display {
+#post-body .misc-pub-section.misc-pub-andthen #andthen-display {
 	font-weight: bold;
 }
 
-#post-body #misc-pub-next-select ul ul { margin: 5px 0 0 20px; }
+#post-body #misc-pub-andthen-select ul ul { margin: 5px 0 0 20px; }
 
-	#post-body #misc-pub-next-select ul.chosen-results { margin: 0; padding: 0; }
+	#post-body #misc-pub-andthen-select ul.chosen-results { margin: 0; padding: 0; }
 
-	#post-body #misc-pub-next-select ul.next-add-options-order { margin-bottom: 0; }
+	#post-body #misc-pub-andthen-select ul.andthen-add-options-order { margin-bottom: 0; }
 
-#post-body #misc-pub-next-select ul.next-add-options-order > li {
+#post-body #misc-pub-andthen-select ul.andthen-add-options-order > li {
 	display: inline-block;
 	margin: 0;
 }
 
-	#post-body #misc-pub-next-select ul.next-add-options-order > li + li { margin-left: 10px; }
+	#post-body #misc-pub-andthen-select ul.andthen-add-options-order > li + li { margin-left: 10px; }
 
-#post-body #misc-pub-next-select ul > li > input { margin-right: 0; }
+#post-body #misc-pub-andthen-select ul > li > input { margin-right: 0; }
 
-#post-body #misc-pub-next-select ul > li > label { padding-left: 3px; }
+#post-body #misc-pub-andthen-select ul > li > label { padding-left: 3px; }
 
-#post-body #misc-pub-next-select div.chosen-container { margin-left: 3px; }
+#post-body #misc-pub-andthen-select div.chosen-container { margin-left: 3px; }
 
-#post-body #misc-pub-next-select a.chosen-single {
+#post-body #misc-pub-andthen-select a.chosen-single {
 	background: #FFF;
 	box-shadow: none;
 	border: 1px solid #CCC;
 }
 
-	#post-body #misc-pub-next-select div.chosen-with-drop a.chosen-single {
+	#post-body #misc-pub-andthen-select div.chosen-with-drop a.chosen-single {
 		border: 1px solid #AAA;
 		-webkit-border-top-left-radius: 5px;
 		-webkit-border-top-right-radius: 5px;
