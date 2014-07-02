@@ -145,7 +145,7 @@ class css_andthen {
 		$post_ID = $_GET['andthen'];
 		$post_type = get_post_type_object(get_post_type($post_ID));
 		
-		if (!$notice = $notices[$post_type->name][$_GET['message']]) {
+		if (!isset($notices[$post_type->name][$_GET['message']]) || !$notice = $notices[$post_type->name][$_GET['message']]) {
 			$notice = $notices['post'][$_GET['message']];
 			$notice = str_replace('Post',$post_type->labels->singular_name,$notice);
 			$notice = str_replace('post',strtolower($post_type->labels->singular_name),$notice);
