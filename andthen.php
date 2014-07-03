@@ -165,17 +165,17 @@ class css_andthen {
 		$this->post_type = $post->post_type;
 
 		$add = $child = $order = $orderdir = $goto = '';
-		if (isset($this->usermeta['add']) && 'add' == $this->usermeta['action']) $add = ' ' . strtolower($this->post_types[$this->usermeta['add']]->labels->singular_name);
-		if (isset($this->usermeta['parent']) && is_post_type_hierarchical($this->post_type)) $child = ' child';
+		if (isset($this->usermeta['add']) && 'add' == $this->usermeta['action'])				$add = ' ' . strtolower($this->post_types[$this->post_type]->labels->singular_name);
+		if (isset($this->usermeta['parent']) && is_post_type_hierarchical($this->post_type))	$child = ' child';
 		if (isset($this->usermeta['order']) && isset($this->usermeta['orderdir'])) {
 			if ('increment' == $this->usermeta['orderdir']) $order = '++';
 			else $order = '--';
 		}
 
 		if ('goto' == $this->action && isset($this->usermeta['goto'])) {
-			if (is_array($this->goto[$this->usermeta['goto']])) {
+			if (is_array($this->goto[$this->usermeta['goto']]))
 				list($goto,$url) = $this->goto[$this->usermeta['goto']];
-			} else $goto = ucfirst($this->usermeta['goto']);
+			else $goto = ucfirst($this->usermeta['goto']);
 		}
 
 		if ('edit' == $this->action)		$display = 'Edit this ' . strtolower($this->post_types[$this->post_type]->labels->singular_name);
