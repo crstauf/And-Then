@@ -8,8 +8,13 @@ Author: Caleb Stauffer
 Author URI: http://www.calebstauffer.com
 */
 
-$css_andthen = new css_andthen();
-unset($css_andthen);
+if (!defined('ABSPATH') || !function_exists('add_filter')) {
+	header( 'Status: 403 Forbidden' );
+	header( 'HTTP/1.1 403 Forbidden' );
+	exit();
+}
+
+if (is_admin()) new css_andthen;
 
 class css_andthen {
 
