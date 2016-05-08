@@ -159,7 +159,7 @@ class css_andthen {
 	function notices($notices) {
 		$post_ID = $_GET['andthen'];
 		$post_type = get_post_type_object(get_post_type($post_ID));
-		
+
 		if (!isset($notices[$post_type->name][$_GET['message']]) || !$notice = $notices[$post_type->name][$_GET['message']]) {
 			$notice = $notices['post'][$_GET['message']];
 			$notice = str_replace('Post',$post_type->labels->singular_name,$notice);
@@ -206,8 +206,8 @@ class css_andthen {
 
 		<div class="misc-pub-section misc-pub-andthen" id="andthen">
 
-			<span class="title">And Then:</span> 
-			<span id="andthen-add-display"><?php echo $display ?></span> 
+			<span class="title">And Then:</span>
+			<span id="andthen-add-display"><?php echo $display ?></span>
 			<a href="#andthen" id="andthen-edit" class="edit-andthen hide-if-no-js"><span aria-hidden="true">Edit</span><span class="screen-reader-text">Edit andthen action</span></a>
 
 			<div id="misc-pub-andthen-select" class="hide-if-no-js" style="display: none;">
@@ -258,15 +258,15 @@ class css_andthen {
 								<?php } ?>
 
 								<?php if (1 == $this->post_types[$this->post_type]->_builtin || $attr) { ?>
-								
+
 									<li style="margin-bottom: 0;">
-										
+
 										<input type="checkbox" id="andthen-add-order" name="andthen[order]" value="1"<?php checked(1,isset($this->usermeta['order']),true) ?> />
-										<label for="andthen-add-order"> 
+										<label for="andthen-add-order">
 											<select name="andthen[orderdir]" id="andthen-add-order-turn">
 												<option value="increment"<?php selected('++',$order,true) ?>>Increment</option>
 												<option value="decrement"<?php selected('--',$order,true) ?>>Decrement</option>
-											</select> 
+											</select>
 											menu order
 										</label>
 
@@ -295,7 +295,7 @@ class css_andthen {
 						</ul>
 
 					</li>
-				
+
 				</ul>
 
 				<p>
@@ -322,7 +322,7 @@ class css_andthen {
 					if (!in_array($name,array('nav_menu_item','revision')))
 						echo '<option value="' . $name . '"' . selected($name,$this->post_type,false) . '>' . $object->labels->singular_name . '</option>';
 				?>
-			
+
 			</select>
 
 			<?php
@@ -343,7 +343,7 @@ class css_andthen {
 						echo '<option value="' . $name . '"' . selected($name,$selected,false) . '>' . $label . '</option>';
 					}
 				?>
-			
+
 			</select>
 
 			<?php
